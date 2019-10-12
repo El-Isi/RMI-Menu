@@ -76,13 +76,43 @@ public class Cliente {
 
                 case 2: //AQUI VA TU PARTE JJ
 
-                case 3: //AQUI VA TU PARTE LEWISAURIO
-                    interfaz.mostrarAsientos();
+                case 3:
                     System.out.println("Selecciona una fila:");
                     fila =  Integer.parseInt(sc.nextLine());
                     System.out.println("Selecciona una columna: ");
                     columna = Integer.parseInt(sc.nextLine());
                     interfaz.ocuparAsiento(fila, columna);
+
+                    Boolean[][] asientos = interfaz.mostrarAsientos();
+                    System.out.println("Asientos disponibles: - \n");
+                    System.out.println("Asientos Ocupados: O \n");
+                    for(int i=0; i<=11; i++){
+                        if (i == 11) {
+                            System.out.println(" "+i);
+                        }else if(i==0){
+                            System.out.print("    "+i);
+                        }else if(i==10){
+                            System.out.print(" "+i);
+                        }else{
+                            System.out.print("  "+i);
+                        }
+
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        System.out.print(j+"  ");
+                        for (int i = 0; i <= 11; i++){
+                            if(asientos[j][i] == null || asientos[j][i] == false) {
+                                System.out.print("[-]");
+                            }
+                            else if (asientos[j][i] == true) {
+                                System.out.print("[O]");
+                            } else{
+                                System.out.print("[-]");
+                                System.out.print("[-]");
+                            }
+                        }
+                        System.out.println("\n");
+                    }
 
                     System.out.println("Presiona ENTER para continuar");
                     sc.nextLine();

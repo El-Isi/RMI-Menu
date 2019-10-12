@@ -1,10 +1,11 @@
- import java.rmi.AlreadyBoundException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Servidor {
     private static final int PUERTO = 1100; //Si cambias aquí el puerto, recuerda cambiarlo en el cliente
@@ -24,7 +25,8 @@ public class Servidor {
                 pelicula.add(genero);
                 return pelicula;
             }
-            public void mostrarAsientos() throws RemoteException{
+            @Override
+            public Boolean[][] mostrarAsientos() throws RemoteException{
                 System.out.println("Asientos disponibles: - \n");
                     System.out.println("Asientos Ocupados: O \n");
                     for(int i=0; i<=11; i++){
@@ -54,7 +56,9 @@ public class Servidor {
                         }
                         System.out.println("\n");
                     }
+                    return asientos;
             }
+            @Override
             public void ocuparAsiento(int Fila, int Columna)throws RemoteException{
                     asientos[Fila][Columna] = true;
             }
