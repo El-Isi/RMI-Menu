@@ -14,9 +14,12 @@ public class Cliente {
         Interfaz interfaz = (Interfaz) registry.lookup("Calculadora"); //Buscar en el registro...
         Scanner sc = new Scanner(System.in);
         int eleccion;
+        
+        int fila;
+        int columna;
         String[] AtributosPelicula = new String[5];
         ArrayList<ArrayList<String>> resultado = new ArrayList<ArrayList<String>>();
-        String menu = "\n\n------------------\n\n[-1] => Salir\n[0] => Agregar\nElige: ";
+        String menu = "\n\n------------------\n\n[-1] => Salir\n[0] => Agregar\n[3] => Asientos\nElige: ";
         do {
             System.out.println(menu);
 
@@ -28,44 +31,44 @@ public class Cliente {
             switch (eleccion) {
                 case 0:
                     System.out.println("Ingresa Nombre: ");
-                    try{
+                    try {
                         AtributosPelicula[0] = sc.nextLine();
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         AtributosPelicula[0] = "";
                     }
 
                     System.out.println("Ingresa Clasificacion: ");
-                    try{
+                    try {
                         AtributosPelicula[1] = sc.nextLine();
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         AtributosPelicula[1] = "";
                     }
 
                     System.out.println("Ingresa Horario: ");
-                    try{
+                    try {
                         AtributosPelicula[2] = sc.nextLine();
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         AtributosPelicula[2] = "";
                     }
 
                     System.out.println("Ingresa Sala: ");
-                    try{
+                    try {
                         AtributosPelicula[3] = sc.nextLine();
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         AtributosPelicula[3] = "";
                     }
 
                     System.out.println("Ingresa Genero: ");
-                    try{
+                    try {
                         AtributosPelicula[4] = sc.nextLine();
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         AtributosPelicula[4] = "";
                     }
-                    resultado.add(interfaz.AddPelicula(AtributosPelicula[0], AtributosPelicula[1], AtributosPelicula[2], AtributosPelicula[3] ,AtributosPelicula[4]));
+                    resultado.add(interfaz.AddPelicula(AtributosPelicula[0], AtributosPelicula[1], AtributosPelicula[2], AtributosPelicula[3], AtributosPelicula[4]));
                     System.out.println("\n PELICULA AGREGADA \n");
 
                     System.out.println("Peliculas: \n");
-                    for (int i = 0; i < resultado.size(); i++){
+                    for (int i = 0; i < resultado.size(); i++) {
                         System.out.println(resultado.get(i) + "\n");
                     }
 
@@ -74,11 +77,18 @@ public class Cliente {
                 case 2: //AQUI VA TU PARTE JJ
 
                 case 3: //AQUI VA TU PARTE LEWISAURIO
+                    interfaz.mostrarAsientos();
+                    System.out.println("Selecciona una fila:");
+                    fila =  Integer.parseInt(sc.nextLine());
+                    System.out.println("Selecciona una columna: ");
+                    columna = Integer.parseInt(sc.nextLine());
+                    interfaz.ocuparAsiento(fila, columna);
+
+                    System.out.println("Presiona ENTER para continuar");
+                    sc.nextLine();
+
             }
-
-            System.out.println("Presiona ENTER para continuar");
-            sc.nextLine();
-
-        } while (eleccion != -1);
+        } while (eleccion != -1) ;
+        }
     }
-}
+

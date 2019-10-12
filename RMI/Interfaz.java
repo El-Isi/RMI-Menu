@@ -6,4 +6,6 @@ import java.util.ArrayList;
 */
 public interface Interfaz extends Remote {
     ArrayList<String> AddPelicula(String nombre, String clasificacion, String duracion, String Sala, String genero) throws RemoteException;
+    void mostrarAsientos() throws RemoteException;
+    void ocuparAsiento(int Fila, int Columna) throws RemoteException;
 }
