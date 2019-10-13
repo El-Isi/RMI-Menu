@@ -21,6 +21,7 @@ public class Cliente {
         String[] AtributosPelicula = new String[6];
         ArrayList<ArrayList<String>> resultado = new ArrayList<ArrayList<String>>();
         String menu = "\n\n------------------\n\n[0] => Salir\n[1] => Agregar Pelicula\n[2] => Vender voleto\nElige: ";
+
         do {
             System.out.println(menu);
 

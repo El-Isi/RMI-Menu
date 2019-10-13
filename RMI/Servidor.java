@@ -26,10 +26,12 @@ public class Servidor {
                 pelicula.add(Sala);
                 pelicula.add(genero);
                 asientos.add(asientosOcupados);
+
                 return pelicula;
             }
 
             ;
+
             @Override
             public Boolean[][] mostrarAsientos(int id) throws RemoteException{
                 return asientos.get(id);
@@ -48,6 +50,8 @@ public class Servidor {
         }, 0);
         Registry registry = LocateRegistry.createRegistry(PUERTO);
         System.out.println("Servidor escuchando en el puerto " + String.valueOf(PUERTO));
-        registry.bind("Cinepolis", remote); // Registrar calculadora
+
+        registry.bind("Cinepolis", remote); // Registrar cine
+
     }
 }
