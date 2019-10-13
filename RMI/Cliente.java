@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Cliente {
     private static final String IP = "127.0.0.1"; // Puedes cambiar a localhost
@@ -10,11 +11,17 @@ public class Cliente {
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry(IP, PUERTO);
-        Interfaz interfaz = (Interfaz) registry.lookup("Calculadora"); //Buscar en el registro...
+        Interfaz interfaz = (Interfaz) registry.lookup("Cinepolis"); //Buscar en el registro...
         Scanner sc = new Scanner(System.in);
         int eleccion;
-        float numero1, numero2, resultado = 0;
-        String menu = "\n\n------------------\n\n[-1] => Salir\n[0] => Sumar\n[1] => Restar\n[2] => Multiplicar\n[3] => Dividir\nElige: ";
+        int identificador = 1;
+
+        int fila;
+        int columna;
+        String[] AtributosPelicula = new String[6];
+        ArrayList<ArrayList<String>> resultado = new ArrayList<ArrayList<String>>();
+        String menu = "\n\n------------------\n\n[0] => Salir\n[1] => Agregar Pelicula\n[2] => Vender voleto\nElige: ";
+
         do {
             System.out.println(menu);
 
@@ -23,41 +30,146 @@ public class Cliente {
             } catch (NumberFormatException e) {
                 eleccion = -1;
             }
+            switch (eleccion) {
+                case 1:
+                    try {
+                        AtributosPelicula[0] = Integer.toString(identificador);
+                        identificador++;
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[0] = "";
+                    }
 
-            if(eleccion != -1){
+                    System.out.println("Ingresa Nombre: ");
+                    try {
+                        AtributosPelicula[1] = sc.nextLine();
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[1] = "";
+                    }
 
-                System.out.println("Ingresa el numero 1: ");
-                try{
-                    numero1 = Float.parseFloat(sc.nextLine());
-                }catch(NumberFormatException e){
-                    numero1 = 0;
-                }
+                    System.out.println("Ingresa Clasificacion: ");
+                    try {
+                        AtributosPelicula[2] = sc.nextLine();
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[2] = "";
+                    }
 
-                System.out.println("Ingresa el numero 2: ");
-                try{
-                    numero2 = Float.parseFloat(sc.nextLine());
-                }catch(NumberFormatException e){
-                    numero2 = 0;
-                }
-                switch (eleccion) {
-                    case 0:
-                        resultado = interfaz.sumar(numero1, numero2);
-                        break;
-                    case 1:
-                        resultado = interfaz.restar(numero1, numero2);
-                        break;
-                    case 2:
-                        resultado = interfaz.multiplicar(numero1, numero2);
-                        break;
-                    case 3:
-                        resultado = interfaz.dividir(numero1, numero2);
-                        break;
-                }
+                    System.out.println("Ingresa Horario: ");
+                    try {
+                        AtributosPelicula[3] = sc.nextLine();
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[3] = "";
+                    }
 
-                System.out.println("Resultado => " + String.valueOf(resultado));
-                System.out.println("Presiona ENTER para continuar");
-                sc.nextLine();
+                    System.out.println("Ingresa Sala: ");
+                    try {
+                        AtributosPelicula[4] = sc.nextLine();
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[4] = "";
+                    }
+
+                    System.out.println("Ingresa Genero: ");
+                    try {
+                        AtributosPelicula[5] = sc.nextLine();
+                    } catch (NumberFormatException e) {
+                        AtributosPelicula[5] = "";
+                    }
+                    resultado.add(interfaz.AddPelicula(AtributosPelicula[0], AtributosPelicula[1], AtributosPelicula[2], AtributosPelicula[3], AtributosPelicula[4], AtributosPelicula[5]));
+                    System.out.println("\n PELICULA AGREGADA \n");
+
+                    System.out.println("Peliculas: \n");
+                    for (int i = 0; i < resultado.size(); i++) {
+                        System.out.println(resultado.get(i) + "\n");
+                    }
+
+                    break;
+
+                case 2:
+
+                    int id;
+                    System.out.println("Selecciona el numero de pelicula: \n");
+                    for (int i = 0; i < resultado.size(); i++){
+                        System.out.print("Pelicula "+ (i+1) +": ");
+                        System.out.println(resultado.get(i).get(1));
+                    }
+
+                    System.out.println();
+                    id = Integer.parseInt(sc.nextLine());
+
+                    Boolean[][] asientos = interfaz.mostrarAsientos(id-1);
+                    System.out.println("Asientos: \n");
+
+                    for(int i=0; i<=11; i++){
+                        if (i == 11) {
+                            System.out.println(" "+i);
+                        }else if(i==0){
+                            System.out.print("    "+i);
+                        }else if(i==10){
+                            System.out.print(" "+i);
+                        }else{
+                            System.out.print("  "+i);
+                        }
+
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        System.out.print(j+"  ");
+                        for (int i = 0; i <= 11; i++){
+                            if(asientos[j][i] == null || asientos[j][i] == false) {
+                                System.out.print("[-]");
+                            }
+                            else if (asientos[j][i] == true) {
+                                System.out.print("[O]");
+                            } else{
+                                System.out.print("[-]");
+                                System.out.print("[-]");
+                            }
+                        }
+                        System.out.println("\n");
+                    }
+
+                    System.out.println("Selecciona una fila:");
+                    fila =  Integer.parseInt(sc.nextLine());
+
+                    System.out.println("Selecciona una columna: ");
+                    columna = Integer.parseInt(sc.nextLine());
+
+                    interfaz.ocuparAsiento(fila, columna, id-1, asientos);
+
+                    System.out.println("Asientos: \n");
+                    asientos = interfaz.mostrarAsientos(id-1);
+
+                    for(int i=0; i<=11; i++){
+                        if (i == 11) {
+                            System.out.println(" "+i);
+                        }else if(i==0){
+                            System.out.print("    "+i);
+                        }else if(i==10){
+                            System.out.print(" "+i);
+                        }else{
+                            System.out.print("  "+i);
+                        }
+
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        System.out.print(j+"  ");
+                        for (int i = 0; i <= 11; i++){
+                            if(asientos[j][i] == null || asientos[j][i] == false) {
+                                System.out.print("[-]");
+                            }
+                            else if (asientos[j][i] == true) {
+                                System.out.print("[O]");
+                            } else{
+                                System.out.print("[-]");
+                                System.out.print("[-]");
+                            }
+                        }
+                        System.out.println("\n");
+                    }
+
+                    //JJ AQUI VA TU PARTE, HAS QUE SE GENERE EL TICKET EN EL SERVIDOR QUE LO GUARDE Y QUE AQUI EN EL CLIENTE LO IMPRIMA
+
+                    System.out.println("Presiona ENTER para continuar");
+                    sc.nextLine();
             }
-        } while (eleccion != -1);
+        } while (eleccion != -1) ;
+        }
     }
-}
