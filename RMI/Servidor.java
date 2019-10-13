@@ -10,66 +10,44 @@ import java.util.Arrays;
 public class Servidor {
     private static final int PUERTO = 1100; //Si cambias aquí el puerto, recuerda cambiarlo en el cliente
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
-        Boolean[][] asientos = new Boolean[6][12];
+        ArrayList<Boolean[][]> asientos = new ArrayList<Boolean[][]>();
+        Boolean[][] asientosOcupados = new Boolean[6][12];
         Remote remote = UnicastRemoteObject.exportObject(new Interfaz() {
             /*
                 Sobrescribir opcionalmente los métodos que escribimos en la interfaz
             */
             @Override
-            public ArrayList<String> AddPelicula(String nombre, String clasificacion, String duracion, String Sala, String genero) throws RemoteException {
+            public ArrayList<String> AddPelicula(String id, String nombre, String clasificacion, String duracion, String Sala, String genero) throws RemoteException {
                 ArrayList<String> pelicula = new ArrayList<String>();
+                pelicula.add(id);
                 pelicula.add(nombre);
                 pelicula.add(clasificacion);
                 pelicula.add(duracion);
                 pelicula.add(Sala);
                 pelicula.add(genero);
+                asientos.add(asientosOcupados);
                 return pelicula;
             }
-            @Override
-            public Boolean[][] mostrarAsientos() throws RemoteException{
-                System.out.println("Asientos disponibles: - \n");
-                    System.out.println("Asientos Ocupados: O \n");
-                    for(int i=0; i<=11; i++){
-                        if (i == 11) {
-                            System.out.println(" "+i);
-                        }else if(i==0){
-                            System.out.print("    "+i);
-                        }else if(i==10){
-                            System.out.print(" "+i);
-                        }else{
-                            System.out.print("  "+i);
-                        }
 
-                    }
-                    for (int j = 0; j <= 5; j++) {
-                        System.out.print(j+"  ");
-                        for (int i = 0; i <= 11; i++){
-                            if(asientos[j][i] == null || asientos[j][i] == false) {
-                                System.out.print("[-]");
-                            }
-                            else if (asientos[j][i] == true) {
-                                System.out.print("[O]");
-                            } else{
-                                System.out.print("[-]");
-                                System.out.print("[-]");
-                            }
-                        }
-                        System.out.println("\n");
-                    }
-                    return asientos;
-            }
+            ;
             @Override
-            public void ocuparAsiento(int Fila, int Columna)throws RemoteException{
-                    asientos[Fila][Columna] = true;
+            public Boolean[][] mostrarAsientos(int id) throws RemoteException{
+                return asientos.get(id);
+            }
+
+            ;
+            @Override
+            public void ocuparAsiento(int Fila, int Columna, int id, Boolean[][] asientosTmp)throws RemoteException{
+                asientosTmp[Fila][Columna] = true;
+                asientos.set(id, asientosTmp);
             }
 
             ;
 
-            
 
         }, 0);
         Registry registry = LocateRegistry.createRegistry(PUERTO);
         System.out.println("Servidor escuchando en el puerto " + String.valueOf(PUERTO));
-        registry.bind("Calculadora", remote); // Registrar calculadora
+        registry.bind("Cinepolis", remote); // Registrar calculadora
     }
 }
