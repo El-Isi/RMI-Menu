@@ -1,4 +1,4 @@
-import java.rmi.NotBoundException;
+﻿import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -20,7 +20,7 @@ public class Cliente {
         int columna;
         String[] AtributosPelicula = new String[6];
         ArrayList<ArrayList<String>> resultado = new ArrayList<ArrayList<String>>();
-        String menu = "\n\n------------------\n\n[0] => Salir\n[1] => Agregar Pelicula\n[2] => Vender voleto\nElige: ";
+        String menu = "\n\n------------------\n\n[0] => Salir\n[1] => Agregar Pelicula\n[2] => Vender Boleto\nElige: ";
 
         do {
             System.out.println(menu);
@@ -165,7 +165,17 @@ public class Cliente {
                         System.out.println("\n");
                     }
 
-                    //JJ AQUI VA TU PARTE, HAS QUE SE GENERE EL TICKET EN EL SERVIDOR QUE LO GUARDE Y QUE AQUI EN EL CLIENTE LO IMPRIMA
+                    System.out.print("\n\n*******************************\n");
+                    System.out.print("*          Cinepolis          *\n");
+                    System.out.print("*******************************\n");
+                    System.out.print("            Ticket             \n");
+                    System.out.print("                               \n");
+                    System.out.print("  "+resultado.get(id-1).get(1)+"\n");
+                    System.out.print("Sala: "+resultado.get(id-1).get(4));
+                    System.out.print("Fila: "+fila+" Columna: "+columna);
+                    System.out.print("                               \n");
+                    System.out.print("*******************************\n");
+
 
                     System.out.println("Presiona ENTER para continuar");
                     sc.nextLine();
